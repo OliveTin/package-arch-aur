@@ -1,15 +1,18 @@
 # Maintainer: James Read <contact@jread.com>
 pkgname=olivetin
 pkgver=2024.03.24
-pkgrel=2
+pkgrel=3
 pkgdesc="Give safe and simple access to predefined shell commands from a web interface."
 arch=('x86_64')
 provides=("olivetin")
 conflicts=("olivetin-bin")
 url="http://www.olivetin.app"
 license=('AGPLv3')
-makedepends=('go'
-	'git')
+makedepends=(
+	'go'
+	'git'
+	'npm'
+)
 source=("$pkgname-$pkgver::git+https://github.com/OliveTin/OliveTin.git?tag=${pkgver}"
 	"systemd-unit-usr-bin.patch")
 noextract=()
