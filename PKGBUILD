@@ -26,8 +26,9 @@ prepare() {
 build() {
 	cd "$srcdir/${pkgname}-${pkgver}"
 	make grpc
+	make webui-dist
 	make
-} 
+}
 
 check() {
 	cd "$srcdir/${pkgname}-${pkgver}"
