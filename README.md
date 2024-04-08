@@ -8,3 +8,4 @@ Find out more at http://olivetin.app
 
 * Update .SRCINFO - version number in 3 places
 * Update PKGBUILD - version number in 1 place
+* git push aur
