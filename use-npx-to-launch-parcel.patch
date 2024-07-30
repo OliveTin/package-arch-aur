@@ -1,0 +1,11 @@
+--- Makefile	2024-07-30 07:05:12.177239803 +0000
++++ Makefile.patched	2024-07-30 07:04:38.173821109 +0000
+@@ -70,7 +70,7 @@
+ webui-dist:
+ 	rm -rf webui webui.dev/dist
+ 	cd webui.dev && npm install
+-	cd webui.dev && parcel build --public-url "." && mv dist ../webui
++	cd webui.dev && npx parcel build --public-url "." && mv dist ../webui
+ 
+ clean:
+ 	rm -rf dist OliveTin OliveTin.armhf OliveTin.exe reports gen

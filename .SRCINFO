@@ -1,7 +1,7 @@
 pkgbase = olivetin
 	pkgdesc = Give safe and simple access to predefined shell commands from a web interface.
 	pkgver = 2024.03.24
-	pkgrel = 4
+	pkgrel = 5
 	url = http://www.olivetin.app
 	arch = x86_64
 	license = AGPLv3
@@ -15,5 +15,7 @@ pkgbase = olivetin
 	md5sums = SKIP
 	source = systemd-unit-usr-bin.patch
 	md5sums = 879288fcc421096769c4dc7adcf251c5
+	source = use-npx-to-launch-parcel.patch
+	md5sums = f9e2bb7a4849af9538f3102946e5e687
 
 pkgname = olivetin
