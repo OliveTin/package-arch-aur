@@ -13,7 +13,7 @@ makedepends=(
 	'git'
 	'npm'
 )
-source=("$pkgname-$pkgver::git+https://github.com/OliveTin/OliveTin.git?tag=${pkgver}"
+source=("$pkgname-$pkgver::git+https://github.com/OliveTin/OliveTin.git#tag=${pkgver}"
 	"systemd-unit-usr-bin.patch"
 	"use-npx-to-launch-parcel.patch")
 noextract=()
