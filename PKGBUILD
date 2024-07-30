@@ -18,6 +18,7 @@ source=("$pkgname-$pkgver::git+https://github.com/OliveTin/OliveTin.git?tag=${pk
 	"use-npx-to-launch-parcel.patch")
 noextract=()
 md5sums=('SKIP'
+	'SKIP'
 	'SKIP')
 validpgpkeys=()
 
