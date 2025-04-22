@@ -1,7 +1,7 @@
 # Maintainer: James Read <contact@jread.com>
 pkgname=olivetin
 pkgver=2024.03.24
-pkgrel=4
+pkgrel=5
 pkgdesc="Give safe and simple access to predefined shell commands from a web interface."
 arch=('x86_64')
 provides=("olivetin")
@@ -13,22 +13,24 @@ makedepends=(
 	'git'
 	'npm'
 )
-source=("$pkgname-$pkgver::git+https://github.com/OliveTin/OliveTin.git?tag=${pkgver}"
-	"systemd-unit-usr-bin.patch")
+source=("$pkgname-$pkgver::git+https://github.com/OliveTin/OliveTin.git#tag=${pkgver}"
+	"systemd-unit-usr-bin.patch"
+	"use-npx-to-launch-parcel.patch")
 noextract=()
 md5sums=('SKIP'
+	'SKIP'
 	'SKIP')
 validpgpkeys=()
 
 prepare() {
 	cd "$srcdir/${pkgname}-${pkgver}"
 	patch OliveTin.service < "$srcdir/systemd-unit-usr-bin.patch"
-
+	patch Makefile < "$srcdir/use-npx-to-launch-parcel.patch"
 }
 
 build() {
 	cd "$srcdir/${pkgname}-${pkgver}"
-	make grpc
+	make GOPATH="${srcdir}" PATH=${PATH}:"${srcdir}/bin" grpc
 	make webui-dist
 	make
 }
