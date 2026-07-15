@@ -1,21 +1,20 @@
 pkgbase = olivetin
 	pkgdesc = Give safe and simple access to predefined shell commands from a web interface.
-	pkgver = 2024.03.24
-	pkgrel = 5
-	url = http://www.olivetin.app
+	pkgver = 3000.17.0
+	pkgrel = 1
+	url = https://www.olivetin.app
 	arch = x86_64
-	license = AGPLv3
-	provides = olivetin
-	conflicts = olivetin-bin
-	backup = /etc/OliveTin/config.yaml
+	license = AGPL-3.0-only
 	makedepends = go
 	makedepends = git
-	makedepends = npm
-	source = olivetin-2024.03.24::git+https://github.com/OliveTin/OliveTin.git?tag=2024.03.24
-	md5sums = SKIP
+	provides = olivetin
+	conflicts = olivetin-bin
+	backup = etc/OliveTin/config.yaml
+	source = olivetin-3000.17.0::git+https://github.com/OliveTin/OliveTin.git#tag=3000.17.0
+	source = https://github.com/OliveTin/OliveTin/releases/download/3000.17.0/OliveTin-linux-amd64.tar.gz
 	source = systemd-unit-usr-bin.patch
-	md5sums = 879288fcc421096769c4dc7adcf251c5
-	source = use-npx-to-launch-parcel.patch
-	md5sums = f9e2bb7a4849af9538f3102946e5e687
+	sha256sums = SKIP
+	sha256sums = eebf32945ce8446dfbf7497c5befdee84f5144ae39dbb4680fcb8eec9ec2500a
+	sha256sums = 3f5759da171ae5221402b8a2e20101b89ef778e3c269aad1bb7007d18a1ce653
 
 pkgname = olivetin

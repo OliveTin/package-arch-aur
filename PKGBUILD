@@ -1,38 +1,41 @@
 # Maintainer: James Read <contact@jread.com>
 pkgname=olivetin
-pkgver=2024.03.24
-pkgrel=5
+pkgver=3000.17.0
+pkgrel=1
 pkgdesc="Give safe and simple access to predefined shell commands from a web interface."
 arch=('x86_64')
 provides=("olivetin")
 conflicts=("olivetin-bin")
-url="http://www.olivetin.app"
-license=('AGPLv3')
+url="https://www.olivetin.app"
+license=('AGPL-3.0-only')
+backup=('etc/OliveTin/config.yaml')
 makedepends=(
 	'go'
 	'git'
-	'npm'
 )
 source=("$pkgname-$pkgver::git+https://github.com/OliveTin/OliveTin.git#tag=${pkgver}"
-	"systemd-unit-usr-bin.patch"
-	"use-npx-to-launch-parcel.patch")
+	"https://github.com/OliveTin/OliveTin/releases/download/${pkgver}/OliveTin-linux-amd64.tar.gz"
+	"systemd-unit-usr-bin.patch")
 noextract=()
-md5sums=('SKIP'
-	'SKIP'
-	'SKIP')
+sha256sums=('SKIP'
+	'eebf32945ce8446dfbf7497c5befdee84f5144ae39dbb4680fcb8eec9ec2500a'
+	'3f5759da171ae5221402b8a2e20101b89ef778e3c269aad1bb7007d18a1ce653')
 validpgpkeys=()
 
 prepare() {
 	cd "$srcdir/${pkgname}-${pkgver}"
-	patch OliveTin.service < "$srcdir/systemd-unit-usr-bin.patch"
-	patch Makefile < "$srcdir/use-npx-to-launch-parcel.patch"
+	patch -p1 < "$srcdir/systemd-unit-usr-bin.patch"
 }
 
 build() {
-	cd "$srcdir/${pkgname}-${pkgver}"
-	make GOPATH="${srcdir}" PATH=${PATH}:"${srcdir}/bin" grpc
-	make webui-dist
-	make
+	cd "$srcdir/${pkgname}-${pkgver}/service"
+
+	export CGO_ENABLED=0
+	go build \
+		-trimpath \
+		-ldflags "-s -w -X main.version=${pkgver}" \
+		-o ../OliveTin \
+		.
 }
 
 check() {
@@ -42,15 +45,18 @@ check() {
 package() {
 	cd "$srcdir/${pkgname}-${pkgver}"
 
-	mkdir -p $pkgdir/usr/bin/
-	cp OliveTin $pkgdir/usr/bin/
+	install -Dm755 OliveTin "$pkgdir/usr/bin/OliveTin"
 
-	mkdir -p $pkgdir/etc/OliveTin/
-	cp config.yaml $pkgdir/etc/OliveTin/
+	install -Dm644 config.yaml "$pkgdir/etc/OliveTin/config.yaml"
+	install -Dm644 var/systemd/OliveTin.service "$pkgdir/usr/lib/systemd/system/OliveTin.service"
+	install -Dm644 var/manpage/OliveTin.1.gz "$pkgdir/usr/share/man/man1/OliveTin.1.gz"
 
-	mkdir -p $pkgdir/usr/lib/systemd/system/
-	cp OliveTin.service $pkgdir/usr/lib/systemd/system/
+	# Prebuilt webui from the matching release archive
+	mkdir -p "$pkgdir/var/www/olivetin"
+	cp -a "$srcdir/OliveTin-linux-amd64/webui/." "$pkgdir/var/www/olivetin/"
 
-	mkdir -p $pkgdir/var/www/olivetin/
-	cp -r webui/* $pkgdir/var/www/olivetin/
+	if [[ -d var/entities ]]; then
+		mkdir -p "$pkgdir/etc/OliveTin/entities"
+		cp -a var/entities/. "$pkgdir/etc/OliveTin/entities/"
+	fi
 }
